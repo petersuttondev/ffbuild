@@ -5,7 +5,7 @@ An FFmpeg filter graph and command line builder for Python.
 Code:
 
 ```Python
-from ffbuilder import FilterGraph, Filter
+from ffbuild import FilterGraph, Filter
 
 
 graph = FilterGraph()
