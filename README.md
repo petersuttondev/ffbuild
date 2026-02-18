@@ -11,7 +11,7 @@ from ffbuilder import FilterGraph, Filter
 graph = FilterGraph()
 
 (split,) = graph.append_filter('split', input='0:v', output=('a', 'b'))
-link_a, link_b = split.outputs
+link_a, link_b = split.output
 
 graph.append_filter('select', 'eq(n, 0)', input=link_a, output='c')
 
