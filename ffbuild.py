@@ -212,6 +212,10 @@ class Links:
         return iter(self._all)
 
     @override
+    def __repr__(self) -> str:
+        return f'{type(self).__name__}({self._all!r})'
+
+    @override
     def __str__(self) -> str:
         return ''.join(map(str, self))
 
@@ -261,7 +265,7 @@ class Filter:
 
     @override
     def __repr__(self) -> str:
-        return f'{type(self).__name__}({self.name!r}, {self.arguments!r})'
+        return f'{type(self).__name__}({self.name!r}, {self.arguments!r}, input={self.input!r}, output={self.output!r})'
 
     @override
     def __str__(self) -> str:
@@ -284,6 +288,12 @@ class FilterChain:
 
         self._filters: Final[list[Filter]] = filters
 
+    def __bool__(self) -> bool:
+        return bool(self._filters)
+
+    def __iter__(self) -> Iterator[Filter]:
+        return iter(self._filters)
+
     @override
     def __repr__(self) -> str:
         return f'{type(self).__name__}({self._filters!r})'
@@ -291,9 +301,6 @@ class FilterChain:
     @override
     def __str__(self) -> str:
         return ','.join(map(str, self._filters))
-
-    def __iter__(self) -> Iterator[Filter]:
-        return iter(self._filters)
 
 
 @final
@@ -306,6 +313,9 @@ class FilterGraph:
             chains = list(chains)
 
         self._chains: Final[list[FilterChain]] = chains
+
+    def __bool__(self) -> bool:
+        return bool(self._chains)
 
     def __iter__(self) -> Iterator[FilterChain]:
         return iter(self._chains)
@@ -322,12 +332,7 @@ class FilterGraph:
     def append(self, chain: FilterChain | None = None) -> FilterChain: ...
 
     @overload
-    def append(
-        self,
-        filter: Filter,
-        /,
-        *filters: Filter,
-    ) -> FilterChain: ...
+    def append(self, filter: Filter, /, *filters: Filter) -> FilterChain: ...
 
     def append(
         self,
