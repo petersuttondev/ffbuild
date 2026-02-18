@@ -45,7 +45,7 @@ def install() -> None:
 
 @task
 def uninstall() -> None:
-    _run('venv/bin/pip', 'uninstall', '--yes', 'plans')
+    _run('venv/bin/pip', 'uninstall', '--yes', 'ffbuild')
 
 
 # Utilities →
