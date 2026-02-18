@@ -1,6 +1,6 @@
 # ffbuild
 
-An FFmpeg filter graph and command line builder for Python.
+An FFmpeg filter graph and command line (coming soon) builder for Python.
 
 Code:
 
