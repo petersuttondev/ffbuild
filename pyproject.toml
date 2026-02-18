@@ -1,0 +1,15 @@
+[project]
+name = "ffbuild"
+version = "0.1.0"
+requires-python = ">= 3.14"
+
+[dependency-groups]
+dev = [
+  "cleek",
+  "hatchling",
+  "pytest",
+]
+
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
