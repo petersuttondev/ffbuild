@@ -3,6 +3,16 @@ import pytest
 import ffbuild
 
 
+def test_check_name_valid():
+    name = 'name'
+    assert ffbuild.check_name(name) == name
+
+
+def test_check_name_invalid():
+    with pytest.raises(ValueError):
+        ffbuild.check_name('@')
+
+
 def test_value_repr():
     value = ffbuild.Value('a')
     assert repr(value) == "Value('a')"

@@ -3,6 +3,7 @@ from collections.abc import Iterable, Iterator, Mapping
 from types import NotImplementedType
 from typing import (
     Final,
+    NewType,
     NoReturn,
     NotRequired,
     TypedDict,
@@ -11,6 +12,18 @@ from typing import (
     overload,
     override,
 )
+
+NAME_CHARS: Final[frozenset[str]] = frozenset(
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'
+)
+
+Name = NewType('Name', str)
+
+
+def check_name(text: str) -> Name:
+    if NAME_CHARS.issuperset(text):
+        return Name(text)
+    raise ValueError(f'invalid name {text!r}')
 
 
 SPECIAL_CHARS: Final[frozenset[str]] = frozenset(('[', ']', '=', ';', ','))
@@ -249,14 +262,14 @@ class Filter:
     @override
     def __init__(
         self,
-        name: str,
+        name: Name | str,
         *args: Arguments | Argument | Value | int | str,
         kwargs: Mapping[str, Value | int | str] | None = None,
         input: Links | Iterable[Link | str] | Link | str | None = None,
         output: Links | Iterable[Link | str] | Link | str | None = None,
         **override_kwargs: Value | int | str,
     ) -> None:
-        self.name = name
+        self.name: Name = check_name(name)
         kwargs = {} if kwargs is None else dict(kwargs)
         kwargs.update(override_kwargs)
         self.arguments = Arguments(*args, **kwargs)
@@ -367,7 +380,7 @@ class FilterGraph:
 
     def append_filter(
         self,
-        name: str,
+        name: Name | str,
         *args: Arguments | Argument | Value | int | str,
         kwargs: Mapping[str, Value | int | str] | None = None,
         input: Links | Iterable[Link | str] | Link | str | None = None,
